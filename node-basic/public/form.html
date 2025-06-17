@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <h1>다양한 폼데이터 서버에 전송하기</h1>
+    <h2>GET방식일 때 요청 데이터 : req.query</h2>
+    <form method="get" action="/login">
+      닉네임 : <input type="text" name="nick" id="nick" /><br /><br />
+      비밀번호 : <input type="password" name="passwd" id="passwd" /><br /><br />
+      <button>로그인</button>
+    </form>
+    <hr color="red" />
+    <h2>POST방식일 때 요청 데이터 : req.body</h2>
+    <form method="post" action="/login">
+      닉네임 : <input type="text" name="nick" id="nick" /><br /><br />
+      비밀번호 : <input type="password" name="passwd" id="passwd" /><br /><br />
+      <button>로그인</button>
+    </form>
+    <!-- fetch('/login/hong')이용해서 요청을 '/login/hong' => req.params -->
+  </body>
+</html>
