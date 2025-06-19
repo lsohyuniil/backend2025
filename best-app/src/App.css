@@ -1,0 +1,29 @@
+#root {
+  width: 100%;
+  max-width: none;
+  margin: 0;
+  padding: 0;
+}
+
+.main {
+  min-height: 100vh;
+}
+
+.footer {
+  text-align: center;
+  background-color: #ccc;
+  min-height: 40px;
+  /* line-height: 40px; */
+  padding: 1em;
+}
+
+a:link,
+a:visited,
+a:active {
+  text-decoration: none;
+}
+
+.postImage {
+  width: 90%;
+  border-radius: 1em;
+}
