@@ -30,4 +30,8 @@ router.get("/", postController.listPost);
 // multer 미들웨어 설정해야 함 -> 라우터 단위 미들웨어 설정
 router.post("/", upMulter.single("file"), postController.createPost);
 
+router.get("/:id", postController.viewPost);
+
+router.delete("/:id", postController.deletePost);
+
 module.exports = router;

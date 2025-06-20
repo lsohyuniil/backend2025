@@ -27,3 +27,20 @@ export const apiCreatePost = async (data: FormData): Promise<Post> => {
 
   return response.data as Post;
 };
+
+// 특정 글 가져오기
+export const apiFetchPostById = async (id: string): Promise<Post | null> => {
+  const response = await axiosInstance.get(`/posts/${id}`);
+  const data = response.data;
+
+  if (data) {
+    return data.data[0] as Post;
+  } else {
+    return null;
+  }
+};
+
+// 글 삭제
+export const apiDeletePost = async (id: string): Promise<void> => {
+  await axiosInstance.delete(`/posts/${id}`);
+};
