@@ -9,7 +9,7 @@ const PostList: React.FC = () => {
 
   useEffect(() => {
     fetchPostList();
-  }, [fetchPostList]);
+  }, []);
 
   return (
     <div className="post-list">
@@ -22,7 +22,11 @@ const PostList: React.FC = () => {
         >
           <div style={{ width: "25%" }}>
             <img
-              src={`http://localhost:7777/images/noImage.png`}
+              src={
+                post.file
+                  ? `http://localhost:7777/uploads/${post.file}`
+                  : `http://localhost:7777/images/noImage.png`
+              }
               alt={post.title}
               className="postImage"
             />

@@ -12,7 +12,7 @@ interface PostFormState {
   };
   // Partial : 객체의 모든 속성을 선택적(optional)로 바꿔줌
   setFormData: (data: Partial<PostFormState["formData"]>) => void;
-  //   resetForm: () => void;
+  resetForm: () => void;
 }
 
 export const usePostFormStore = create<PostFormState>((set) => ({
@@ -30,4 +30,14 @@ export const usePostFormStore = create<PostFormState>((set) => ({
         ...data,
       },
     })),
+  resetForm: () =>
+    set({
+      formData: {
+        writer: "",
+        title: "",
+        content: "",
+        file: "",
+        newFile: null,
+      },
+    }),
 }));

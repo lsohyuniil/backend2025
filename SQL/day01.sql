@@ -151,3 +151,7 @@ select count(id) from posts;
 -- 작성자별로 게시글 수가 3개 이상되는 통계치만 보기
 -- group by절에 조건을 부여할 때는 having 절 이용
 select writer, count(id) from posts group by writer having count(id) >= 3;
+
+-- date format
+select id, title, content, writer, attach as file, date_format(wdate,'%Y-%m-%d %H:%i:%s') as wdate
+from posts order by id desc;
