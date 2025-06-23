@@ -14,23 +14,35 @@ import {
 interface PostState {
   postList: Post[]; // 글 목록
   totalCount: number; // 총 게시글 수
+  totalPages: number; // 총 페이지 수
+  page: number; // 현재 보여 줄 페이지 번호
+  size: number; // 한 페이지 당 보여 줄 목록 개수
   post: Post | null; // 특정 게시글
-
+  setPage: (page: number) => void; // 페이지 변경
   fetchPostList: () => Promise<void>; // 글 목록 가져오기
   fetchPostById: (id: string) => Promise<void>;
   deletePost: (id: string) => Promise<boolean>;
 }
 
-export const usePostStore = create<PostState>((set) => ({
+export const usePostStore = create<PostState>((set, get) => ({
   postList: [],
   totalCount: 0,
+  totalPages: 0,
+  page: 1,
+  size: 3,
+  setPage: (page: number) => set({ page: page }),
   post: null,
   fetchPostList: async () => {
+    const { page } = get(); // get() 함수로 page state 값 가져오기
     try {
       // api 호출 -> 반환해주는 목록, 게시글 수를 set
-      const data = await apiFetchPostList();
+      const data = await apiFetchPostList(page);
 
-      set({ postList: data.data, totalCount: data.totalCount });
+      set({
+        postList: data.data,
+        totalCount: data.totalCount,
+        totalPages: data.totalPages,
+      });
     } catch (error) {
       alert("목록 가져오기 실패 : " + (error as Error).message);
     }

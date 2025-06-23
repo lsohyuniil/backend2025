@@ -7,6 +7,7 @@ import Footer from "./components/Footer";
 import PostApp from "./pages/PostApp";
 import "./App.css";
 import PostView from "./components/posts/PostView";
+import PostEdit from "./components/posts/PostEdit";
 
 function App() {
   return (
@@ -33,6 +34,7 @@ function App() {
                 <Route path="/" element={<Home />} />
                 <Route path="/posts" element={<PostApp />} />
                 <Route path="/posts/:id" element={<PostView />} />
+                <Route path="/postEdit/:id" element={<PostEdit />} />
               </Routes>
             </Col>
           </Row>

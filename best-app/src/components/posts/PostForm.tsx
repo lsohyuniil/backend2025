@@ -41,6 +41,10 @@ const PostForm: React.FC = () => {
 
       // api 호출 -> post 글을 생성하는 api 호출
       await apiCreatePost(data);
+      // for (let i = 0; i <= 10; i++) {
+      // const newPost = await apiCreatePost(data);
+      // console.log("새로 등록한 글 : ", newPost);
+      // }
 
       // 전체글을 가져오는 api 호출
       await fetchPostList();

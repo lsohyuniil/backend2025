@@ -22,7 +22,7 @@ const PostView: React.FC = () => {
       alert("삭제되었습니다.");
       navigate("/posts");
     } else {
-      alert("다시 시도해 주세요.");
+      alert("삭제 실패 : 해당 글이 존재하지 않습니다.");
     }
   };
 

@@ -6,14 +6,23 @@ const PostList: React.FC = () => {
   const fetchPostList = usePostStore((state) => state.fetchPostList);
   const postList = usePostStore((s) => s.postList);
   const totalCount = usePostStore((s) => s.totalCount);
+  const totalPages = usePostStore((s) => s.totalPages);
+  const page = usePostStore((s) => s.page);
+  const setPage = usePostStore((s) => s.setPage);
 
   useEffect(() => {
     fetchPostList();
-  }, []);
+  }, [page]);
+
+  const pageBlock = 5;
+  const startPage = Math.floor((page - 1) / pageBlock) * pageBlock + 1;
+  const endPage = Math.min(startPage + (pageBlock - 1), totalPages);
 
   return (
     <div className="post-list">
-      <h3>총 게시글 수 : {totalCount}개</h3>
+      <h3>
+        총 게시글 수 : {totalCount} 개, {page} page / {totalPages} pages
+      </h3>
       {postList.map((post, index) => (
         <div
           key={index}
@@ -46,7 +55,42 @@ const PostList: React.FC = () => {
         </div>
       ))}
       {/* 페이지 네비게이션 */}
-      <div></div>
+      <div className="text-center">
+        {startPage > 1 && (
+          <button
+            onClick={() => setPage(startPage - 1)}
+            className="btn btn-outline-primary mx-1"
+          >
+            Prev
+          </button>
+        )}
+
+        {/* for(let i=1; i<=totalPages; i++) <button>i</button>
+            for(let i=startPage; i<=endPage; i++) <button>i</button> */}
+        {Array.from(
+          { length: endPage - startPage + 1 },
+          (_, i) => i + startPage
+        ).map((n) => (
+          <button
+            key={n}
+            onClick={() => setPage(n)}
+            className={`btn ${
+              n === page ? "btn-primary" : "btn-outline-primary"
+            }  mx-1`}
+          >
+            {n}
+          </button>
+        ))}
+
+        {endPage < totalPages && (
+          <button
+            onClick={() => setPage(endPage + 1)}
+            className="btn btn-outline-primary mx-1"
+          >
+            Next
+          </button>
+        )}
+      </div>
       <div></div>
     </div>
   );
