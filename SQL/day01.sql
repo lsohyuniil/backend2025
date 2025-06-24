@@ -167,6 +167,13 @@ from posts order by id desc limit 3 offset 0;
 -- 4			3				9
 -- offset = (page - 1) * size;
 
+select * from members;
+
+delete from members where id < 7;
+
+update members set role='ADMIN' where id=7;
+
+select id from members where email='email@email.com';
 
 
 
