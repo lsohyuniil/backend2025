@@ -11,10 +11,42 @@ import PostEdit from "./components/posts/PostEdit";
 import SignupForm from "./components/users/SignupForm";
 import UserList from "./components/users/UserList";
 import LoginModal from "./components/users/LoginModal";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useAuthStore } from "./stores/authStore";
+import type { AuthUser } from "./stores/authStore";
+import axiosInstance from "./api/axiosInstance";
 
 function App() {
   const [showLogin, setShowLogin] = useState<boolean>(false);
+
+  // 로그인 액션 가져오기
+  const loginAuthUser = useAuthStore((s) => s.loginAuthUser);
+
+  const requestAuthUser = async () => {
+    try {
+      // accessToken 가지고, 서버쪽에 인증된 사용자 정보 요청
+      const accessToken = sessionStorage.getItem("accessToken");
+
+      if (accessToken) {
+        const response = await axiosInstance.get<AuthUser>("/auth/user", {
+          headers: { Authorization: `Bearer ${accessToken}` },
+        });
+
+        const authUser = await response.data;
+        loginAuthUser(authUser);
+      }
+    } catch (error) {
+      console.error("accessToken이 유효하지 않습니다.", error);
+      alert(error);
+      sessionStorage.removeItem("accessToken");
+      localStorage.removeItem("refreshToken");
+    }
+  };
+
+  useEffect(() => {
+    requestAuthUser();
+  }, [loginAuthUser]);
+
   return (
     <>
       <div className="container fluid py-5">

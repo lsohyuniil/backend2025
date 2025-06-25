@@ -4,6 +4,7 @@ import type {
   CreateUserResponse,
   CreateEmailResponse,
   UserListResponse,
+  AuthUserResponse,
 } from "../components/users/types/User";
 
 // 회원가입 요청
@@ -26,4 +27,12 @@ export const apiUserList = async (): Promise<UserListResponse[]> => {
   const respone = await axiosInstance.get("/admin/users");
 
   return respone.data;
+};
+
+export const apiSignin = async (loginUser: {
+  email: string;
+  passwd: string;
+}): Promise<AuthUserResponse> => {
+  const response = await axiosInstance.post("/auth/login", loginUser);
+  return response.data;
 };
