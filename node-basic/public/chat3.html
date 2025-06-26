@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>chat-private</title>
+    <style>
+      .container {
+        width: 70%;
+        margin: auto;
+      }
+
+      #msg {
+        width: 500px;
+        height: 500px;
+        margin-top: 1em;
+        overflow: auto;
+        border: 1px solid #ccc;
+        color: darkcyan;
+      }
+
+      #txt {
+        width: 400px;
+        padding: 5px;
+        border: 1px solid #ccc;
+      }
+    </style>
+
+    <!-- socket.io 라이브러리 cdn -->
+    <script src="/socket.io/socket.io.js"></script>
+    <!--  -->
+    <script>
+      //   let socket = io("http://localhost:5555");
+      window.onload = () => {
+        socket = io.connect(); // 채팅 서버에 연결 (같은 도메인의 같은 포트번호로 default 접속)
+        socket.on("connect", () => {
+          console.log("채팅 서버와 연결됨...");
+        });
+        const txt = document.querySelector("#txt");
+        const btn = document.querySelector("#btnSend");
+        const divMsg = document.querySelector("#msg");
+
+        txt.addEventListener("keyup", function (e) {
+          console.log(e.key, e.keyCode);
+          if (e.key === "Enter") {
+            let sendMsg = txt.value;
+            send(sendMsg);
+            txt.value = "";
+            txt.focus();
+          }
+        });
+
+        btn.addEventListener("click", function () {
+          // txt에 입력한 값 얻어와서 서버쪽에 메세지 보냄
+          let sendMsg = txt.value;
+
+          // 이벤트를 발생시켜서 서버쪽에 보냄
+          // socket.emit('이벤트 종류', 데이터)
+          // 이벤트를 받을 때는 on('이벤트', 핸들러 함수)
+          send(sendMsg);
+          txt.value = ""; // 입력값 초기화
+          txt.focus();
+        });
+        function send(str) {
+          socket.emit("echo", str);
+        }
+
+        // 서버가 보내오는 메세지
+        divMsg.innerHTML = "";
+        socket.on("sendOne", (data) => {
+          //   divMsg.append(data);
+          divMsg.innerHTML += data + "<br>";
+          divMsg.style.color = "maroon";
+        });
+      };
+    </script>
+  </head>
+  <body>
+    <div class="container">
+      <h1>Simple Chat - private</h1>
+      <div class="row m-3">
+        <div class="col-md-8 offset-md-2">
+          <input
+            type="text"
+            id="txt"
+            class="form-control"
+            autofocus
+            placeholder="Message"
+          />
+          <button id="btnSend" class="btn btn-success">Send</button>
+        </div>
+      </div>
+      <div class="row m-3">
+        <div class="col-md-8 offset-md-2">
+          <div id="msg">
+            <!-- 채팅 대화 내용 여기에 출력 -->
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
