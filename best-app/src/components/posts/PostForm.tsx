@@ -3,8 +3,12 @@ import { Form, Button } from "react-bootstrap";
 import { usePostFormStore } from "../../stores/postFormStore";
 import { apiCreatePost } from "../../api/postApi";
 import { usePostStore } from "../../stores/postStore";
+import { useAuthStore } from "../../stores/authStore";
 
 const PostForm: React.FC = () => {
+  // 인증받은 사용자 state 얻어오기
+  const authUser = useAuthStore((s) => s.authUser);
+
   const { formData, setFormData, resetForm } = usePostFormStore();
   const fetchPostList = usePostStore((s) => s.fetchPostList);
 
@@ -12,6 +16,7 @@ const PostForm: React.FC = () => {
     e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
     const { name, value } = e.target;
+
     setFormData({ [name]: value });
   };
 
@@ -27,11 +32,16 @@ const PostForm: React.FC = () => {
     e.preventDefault();
 
     try {
+      if (!authUser) {
+        alert("로그인해야 이용 가능합니다.");
+        return;
+      }
+
       // 파일 업로드 시 FormData 객체에 담아서 서버에 요청 보내기
       // 파라미터 데이터와 함께 파일 데이터를 같이 전송하는 방식 -> enctype='multipart/form-data'
       // -> FormData를 이용하면 multipart 방식으로 전송 함
       const data = new FormData();
-      data.append("writer", formData.writer);
+      data.append("writer", authUser.email);
       data.append("title", formData.title);
       data.append("content", formData.content);
 
@@ -66,8 +76,10 @@ const PostForm: React.FC = () => {
           <Form.Control
             type="text"
             name="writer"
+            value={authUser?.email}
             onChange={handleChange}
-            value={formData.writer}
+            placeholder="로그인해야 이용 가능합니다."
+            readOnly // disabled 하면 formdata로 전송이 안되므로 readOnly
             required
           />
         </Form.Group>

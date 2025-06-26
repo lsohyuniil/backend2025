@@ -21,6 +21,7 @@ function App() {
 
   // 로그인 액션 가져오기
   const loginAuthUser = useAuthStore((s) => s.loginAuthUser);
+  const setLoading = useAuthStore((s) => s.setLoading);
 
   const requestAuthUser = async () => {
     try {
@@ -32,20 +33,25 @@ function App() {
           headers: { Authorization: `Bearer ${accessToken}` },
         });
 
-        const authUser = await response.data;
-        loginAuthUser(authUser);
+        const authUser = response.data;
+        loginAuthUser(authUser); // 인증 사용자 정보 state 셋팅 후 로딩 상태를 false로 설정
+        setLoading(false);
+      } else {
+        setLoading(false);
       }
     } catch (error) {
       console.error("accessToken이 유효하지 않습니다.", error);
       alert(error);
       sessionStorage.removeItem("accessToken");
       localStorage.removeItem("refreshToken");
+    } finally {
+      setLoading(false);
     }
   };
 
   useEffect(() => {
     requestAuthUser();
-  }, [loginAuthUser]);
+  }, [loginAuthUser, setLoading]);
 
   return (
     <>

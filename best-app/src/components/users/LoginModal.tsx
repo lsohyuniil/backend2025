@@ -1,10 +1,7 @@
 import type { ChangeEvent, FormEvent } from "react";
 import { Modal, Button, Row, Col, Form } from "react-bootstrap";
 import { useAuthStore } from "../../stores/authStore";
-import type { AuthUser } from "../../stores/authStore";
 import { useState, useRef } from "react";
-import { SiElsevier } from "react-icons/si";
-import { GiEskimo } from "react-icons/gi";
 import { apiSignin } from "../../api/userApi";
 
 interface LoginModalProps {
