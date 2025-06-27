@@ -15,6 +15,11 @@ const io = new Server(server, {
 io.on("connection", (socket) => {
   console.log("## 유저 접속함 : ", socket.id);
   // 유저가 보내오는 메세지 수신 후 보내온 메세지를 public방식으로 전송
+  socket.on("sendMessage", (data) => {
+    console.log(`## ${data.sender} : ${data.message}`);
+    // Public 방식으로 접속한 모두에게 전송 io.sockets.emit() or io.emit()
+    io.sockets.emit("receiveMessage", data);
+  });
 });
 
 server.listen(5555, () => {

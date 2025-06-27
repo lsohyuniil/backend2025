@@ -15,6 +15,7 @@ import { useEffect, useState } from "react";
 import { useAuthStore } from "./stores/authStore";
 import type { AuthUser } from "./stores/authStore";
 import axiosInstance from "./api/axiosInstance";
+import ChatApp from "./components/chat/ChatApp";
 
 function App() {
   const [showLogin, setShowLogin] = useState<boolean>(false);
@@ -84,6 +85,7 @@ function App() {
                 <Route path="/postEdit/:id" element={<PostEdit />} />
                 <Route path="/signup" element={<SignupForm />} />
                 <Route path="/admin/users" element={<UserList />} />
+                <Route path="/chatting" element={<ChatApp />} />
               </Routes>
             </Col>
           </Row>
