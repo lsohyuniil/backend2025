@@ -175,10 +175,40 @@ update members set role='ADMIN' where id=7;
 
 select id from members where email='email@email.com';
 
+delete from products;
+alter table products modify created_at datetime default current_timestamp;
+alter table products modify updated_at datetime default current_timestamp;
+
+ALTER TABLE products
+MODIFY created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+MODIFY updated_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP;
 
 
+-- HIT 카테고리 (4개)
+INSERT INTO products (name, price, description, image_url, spec)
+VALUES 
+('남성 반팔 티셔츠', 19000, '기본핏의 남성 반팔 티셔츠입니다.', '/images/tshirt_m1.jpg', 'hit'),
+('여성 오버핏 반팔 티셔츠', 22900, '스타일리시한 여성 오버핏 반팔 티셔츠입니다.', '/images/tshirt_f1.jpg', 'hit'),
+('남성 기능성 반바지', 27900, '가볍고 시원한 착용감의 남성 기능성 반바지입니다.', '/images/shorts_m1.jpg', 'hit'),
+('여성 플레어 미니 스커트', 34900, '데일리룩에 어울리는 여성 플레어 스커트입니다.', '/images/skirt_f1.jpg', 'new');
 
+-- BEST 카테고리 (4개)
+INSERT INTO products (name, price, description, image_url, spec)
+VALUES 
+('여성 민소매 롱 원피스', 49900, '기본 아이템으로 적합한 여성용 롱 원피스입니다.', '/images/dress_f1.jpg', 'best'),
+('남성 린넨 셔츠', 35900, '여름에 잘 어울리는 남성용 린넨 셔츠입니다.', '/images/shirt_m1.jpg', 'best'),
+('여성 와이드 슬랙스', 39900, '스타일과 편안함을 동시에 잡은 여성 와이드 슬랙스입니다.', '/images/pants_f1.jpg', 'best'),
+('남성 기능성 트레이닝 세트', 59900, '스포츠/일상 모두 어울리는 남성 트레이닝 세트입니다.', '/images/training_m1.jpg', 'best');
 
+-- NORMAL 카테고리 (4개)
+INSERT INTO products (name, price, description, image_url, spec)
+VALUES 
+('남성 슬리퍼', 15900, '가볍고 편안한 EVA 소재 남성 슬리퍼입니다.', '/images/slipper_m1.jpg', 'normal'),
+('여성 통기성 버킷햇', 18900, '여름철 햇볕 차단에 적합한 여성용 버킷햇입니다.', '/images/hat_f1.jpg', 'normal'),
+('남성 발목 양말 5족 세트', 9900, '기본 스타일의 발목 양말 세트입니다.', '/images/socks_m1.jpg', 'normal'),
+('여성 데일리 크로스백', 12900, '가볍고 실용적인 여성용 데일리 크로스백입니다.', '/images/bag_f1.jpg', 'normal');
 
+use edudb;
+select * from products;
 
 

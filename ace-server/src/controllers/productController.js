@@ -24,7 +24,28 @@ exports.createProduct = async (req, res) => {
 
 exports.listProduct = async (req, res) => {
   try {
-    const prodList = await Product.findAll();
+    const orderMap = {
+      idDESC: ["id", "DESC"],
+      priceASC: ["price", "ASC"],
+      priceDESC: ["price", "DESC"],
+    };
+
+    const rawOrder = req.query.order;
+    const order = orderMap[rawOrder] || ["id", "DESC"];
+
+    // const prodList = await Product.findAll();
+    const { count, rows } = await Product.findAndCountAll({
+      attributes: ["id", "name", "price", "image_url", "spec"], // 컬럼명 기술
+      order: [order],
+      // order: [["id", "DESC"]],
+      // limit: 5,
+      // offset: 0,
+    }); // count도 가져오고 모든 상품 목록도 함께 가져옴
+
+    const prodList = {
+      products: rows,
+      totalCount: count,
+    };
     res.status(200).json(prodList);
   } catch (error) {
     res.status(500).json({ message: error.message });

@@ -8,6 +8,7 @@ const { sequelize } = require("./src/models");
 
 // router
 const productRouter = require("./src/routes/productRouter");
+const timeDealRouter = require("./src/routes/timeDealRouter");
 
 const port = process.env.PORT || 7777;
 
@@ -21,6 +22,7 @@ app.use(cors());
 app.use(morgan("dev"));
 
 app.use("/api/products", productRouter);
+app.use("/api/timeDeals", timeDealRouter);
 
 // 서버 가동
 // sequelize.sync(): Sequelize 모델 정의를 실체 DB에 반영하여 동기화하는 역할 수행
