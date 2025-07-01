@@ -7,4 +7,5 @@ export interface TimeDeal {
   start_time: string;
   end_time: string;
   is_active: boolean;
+  image_url?: string;
 }

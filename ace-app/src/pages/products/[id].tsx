@@ -1,6 +1,7 @@
 import React from "react";
 import type { Product } from "../../../types/Product";
 import { GetServerSideProps } from "next";
+import ProductDetail from "../../../components/products/ProductDetail";
 
 // SSR
 
@@ -9,19 +10,7 @@ interface Props {
 }
 
 export default function ProductDetailPage({ product }: Props) {
-  return (
-    <div>
-      name: {product.name}
-      <br />
-      price: {product.price.toLocaleString()} 원
-      <br />
-      <img
-        src={product.image_url}
-        alt={product.name}
-        style={{ width: "220px" }}
-      />
-    </div>
-  );
+  return <ProductDetail product={product} />;
 }
 
 export const getServerSideProps: GetServerSideProps = async (context) => {

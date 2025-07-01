@@ -1,9 +1,9 @@
-import { useEffect, useState } from 'react';
-import styles from './TimeDealList.module.css';
+import { useEffect, useState } from "react";
+import styles from "./TimeDealList.module.css";
 
 export interface TimeDeal {
   id: number;
-  product_id:number;
+  product_id: number;
   product_name: string;
   price: number;
   deal_price: number;
@@ -14,12 +14,17 @@ export interface TimeDeal {
 
 interface TimeDealListProps {
   refresh: boolean;
-  filter: 'all' | 'active' | 'expired';
+  filter: "all" | "active" | "expired";
   onEdit: (deal: TimeDeal) => void;
   onDelete: () => void;
 }
 
-export default function TimeDealList({ refresh, filter, onEdit, onDelete }: TimeDealListProps) {
+export default function TimeDealList({
+  refresh,
+  filter,
+  onEdit,
+  onDelete,
+}: TimeDealListProps) {
   const [deals, setDeals] = useState<TimeDeal[]>([]);
 
   useEffect(() => {
@@ -28,30 +33,32 @@ export default function TimeDealList({ refresh, filter, onEdit, onDelete }: Time
 
   const fetchData = async () => {
     try {
-      const res = await fetch('http://localhost:7777/api/timeDeals/all');
+      const res = await fetch("http://localhost:7777/api/timeDeals/all");
       const data = await res.json();
       setDeals(data);
     } catch (err) {
-      console.error('타임딜 목록 에러', err);
+      console.error("타임딜 목록 에러", err);
     }
   };
 
-  const filteredDeals = deals.filter(deal => {
+  const filteredDeals = deals.filter((deal) => {
     const isActive = deal.is_active === 1 || deal.is_active === true;
-    if (filter === 'all') return true;
-    if (filter === 'active') return isActive;
-    if (filter === 'expired') return !isActive;
+    if (filter === "all") return true;
+    if (filter === "active") return isActive;
+    if (filter === "expired") return !isActive;
     return true;
   });
 
   const handleDelete = async (id: number) => {
-    if (!confirm('정말 삭제하시겠습니까?')) return;
+    if (!confirm("정말 삭제하시겠습니까?")) return;
     try {
-      await fetch(`http://localhost:7777/api/timeDeals/${id}`, { method: 'DELETE' });
+      await fetch(`http://localhost:7777/api/timeDeals/${id}`, {
+        method: "DELETE",
+      });
       //alert('삭제 성공!');
-      onDelete();//// 부모에서 refresh 호출
+      onDelete(); //// 부모에서 refresh 호출
     } catch (err) {
-      alert('삭제 실패');
+      alert("삭제 실패");
     }
   };
 
@@ -80,7 +87,7 @@ export default function TimeDealList({ refresh, filter, onEdit, onDelete }: Time
               </td>
             </tr>
           ) : (
-            filteredDeals.map(deal => (
+            filteredDeals.map((deal) => (
               <tr
                 key={deal.id}
                 className={
@@ -92,21 +99,36 @@ export default function TimeDealList({ refresh, filter, onEdit, onDelete }: Time
                 <td className={styles.td}>{deal.product_id}</td>
                 <td className={styles.td}>{deal.product_name}</td>
                 <td className={styles.td}>{deal.price.toLocaleString()}원</td>
-                <td className={styles.td}>{deal.deal_price.toLocaleString()}원</td>
                 <td className={styles.td}>
-                  {Math.round(((deal.price - deal.deal_price) / deal.price) * 100)}%
+                  {deal.deal_price.toLocaleString()}원
+                </td>
+                <td className={styles.td}>
+                  {Math.round(
+                    ((deal.price - deal.deal_price) / deal.price) * 100
+                  )}
+                  %
                 </td>
                 {/* mysql utc시간이 -9 시간 차이남. 따라서 한국시간 적용하자 */}
-                <td className={styles.td}>{new Date(deal.start_time).toLocaleString('ko-KR')}</td>
-                <td className={styles.td}>{new Date(deal.end_time).toLocaleString('ko-KR')}</td>
                 <td className={styles.td}>
-                  {deal.is_active ? '* 진행중' : 'x 종료'}
+                  {new Date(deal.start_time).toLocaleString("ko-KR")}
                 </td>
                 <td className={styles.td}>
-                  <button className={styles.editBtn} onClick={() => onEdit(deal)}>
+                  {new Date(deal.end_time).toLocaleString("ko-KR")}
+                </td>
+                <td className={styles.td}>
+                  {deal.is_active ? "* 진행중" : "x 종료"}
+                </td>
+                <td className={styles.td}>
+                  <button
+                    className={styles.editBtn}
+                    onClick={() => onEdit(deal)}
+                  >
                     수정
                   </button>
-                  <button className={styles.deleteBtn} onClick={() => handleDelete(deal.id)}>
+                  <button
+                    className={styles.deleteBtn}
+                    onClick={() => handleDelete(deal.id)}
+                  >
                     삭제
                   </button>
                 </td>

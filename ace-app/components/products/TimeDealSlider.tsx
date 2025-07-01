@@ -1,18 +1,8 @@
 import { Swiper, SwiperSlide } from "swiper/react";
 import styles from "./TimeDealSlider.module.css";
 import { useState, useEffect } from "react";
-import { Autoplay } from "swiper/modules";
-import "swiper/css";
-import Link from "next/link";
-
-interface TimeDeal {
-  id: number;
-  product_name: string;
-  deal_price: number;
-  price: number;
-  image_url: string;
-  end_time: string;
-}
+import { Autoplay, Navigation } from "swiper/modules";
+import type { TimeDeal } from "../admin/TimeDealForm";
 
 interface Props {
   deals: TimeDeal[];
@@ -32,9 +22,12 @@ function Countdown({ endTime }: { endTime: string }) {
         setTimeLeft("⏰ 종료됨");
         clearInterval(interval);
       } else {
-        const minutes = Math.floor(diff / 60000);
+        const hours = Math.floor(diff / (60 * 60 * 1000));
+        // const minutes = Math.floor(diff / 60000); // 1/1000초 단위 60*1000
+        const minutes = Math.floor((diff % (60 * 60 * 1000)) / (1000 * 60)); // 분
+        // 분 단위 = diff에서 시간 단위를 뺀 나머지 (나머지 값)를 1분(60000ms)으로 나눈 값이어야 함
         const seconds = Math.floor((diff % 60000) / 1000);
-        setTimeLeft(`${minutes}분 ${seconds}초 남음`);
+        setTimeLeft(`${hours}시 ${minutes}분 ${seconds}초 남음`);
       }
     }, 1000);
 
@@ -47,7 +40,7 @@ function Countdown({ endTime }: { endTime: string }) {
 export default function TimeDealSlider({ deals, title }: Props) {
   return (
     <div className={styles.container}>
-      <h2>{title || "⏰ 타임딜 진행중!"}</h2>
+      <h2>⏰ {title || "타임딜 진행중!"}</h2>
       <Swiper
         slidesPerView={1}
         spaceBetween={20}
@@ -61,7 +54,7 @@ export default function TimeDealSlider({ deals, title }: Props) {
           );
           return (
             <SwiperSlide key={deal.id}>
-              <Link href={`/products/${deal.id}`} className={styles.slide}>
+              <div className={styles.slide}>
                 <div className={styles.card}>
                   <img
                     src={deal.image_url}
@@ -85,7 +78,7 @@ export default function TimeDealSlider({ deals, title }: Props) {
                   {discount}%<br />
                   할인
                 </div>
-              </Link>
+              </div>
             </SwiperSlide>
           );
         })}

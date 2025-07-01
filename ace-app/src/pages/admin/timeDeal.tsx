@@ -1,8 +1,8 @@
 // pages/admin/time-deal.tsx
 import { useState } from "react";
-import TimeDealForm from "@/components/admin/TimeDealForm";
-import TimeDealList from "@/components/admin/TimeDealList";
-import type { TimeDeal } from "@/types/TimeDeal";
+import TimeDealForm from "@/../components/admin/TimeDealForm";
+import TimeDealList from "@/../components/admin/TimeDealList";
+import type { TimeDeal } from "@/../types/TimeDeal";
 
 import styles from "./TimeDealAdmin.module.css";
 import { GetServerSideProps } from "next";

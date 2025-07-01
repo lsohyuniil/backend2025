@@ -29,7 +29,7 @@ app.use("/api/timeDeals", timeDealRouter);
 // 옵션 : force : true -> 기존 테이블을 강제로 삭제 후 재생성
 //       force : false -> 기존 테이블이 없으면 생성. 있으면 그대로 둠
 //       alter : true -> 기존 테이블에 변경 사항이 있으면 변경 사항만 추가 수정
-sequelize.sync({ force: true }).then(() => {
+sequelize.sync({ force: false }).then(() => {
   console.log("DB 연결됨...");
   app.listen(port, () => {
     console.log("http://localhost:" + port);
